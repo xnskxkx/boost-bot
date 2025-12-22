@@ -8,28 +8,28 @@ from config import DB_URL
 from .models import Base
 
 
-# Создание движка БД: SQLite + aiosqlite (дефолт на случай пустого DB_URL)
+# Create DB engine: SQLite + aiosqlite (default for empty DB_URL)
 engine = create_async_engine(
     url=DB_URL,
     echo=False,
     pool_pre_ping=True,
 )
 
-# Асинхронная сессия
-# expire_on_commit=False → объекты не будут инвалидироваться сразу после commit
+# Asynchronous session
+# expire_on_commit=False → objects will not be invalidated immediately after commit
 async_session = async_sessionmaker(bind=engine, expire_on_commit=False)
 
 
 # =========================
-#      ИНИЦИАЛИЗАЦИЯ
+#      INITIALIZATION
 # =========================
 
 async def init_db() -> None:
     """
-    Создать таблицы, если их нет.
-    Вызывать из точки входа (run.py) при старте бота.
+    Create tables if they don't exist.
+    Call from the entry point (run.py) when the bot starts.
     """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    logging.info(f"✅ База данных инициализирована: {DB_URL}")
+    logging.info(f"✅ Database initialized: {DB_URL}")

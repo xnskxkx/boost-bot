@@ -6,22 +6,22 @@ from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.ext.asyncio import AsyncAttrs
 
 
-# --- Настройки метаданных (чистые имена ограничений и индексов) ---
+# --- Metadata settings (clean constraint and index names) ---
 metadata = MetaData()
 
 
 class Base(AsyncAttrs, DeclarativeBase):
-    """Базовый класс для всех моделей."""
+    """Base class for all models."""
     metadata = metadata
 
 
 # =========================
-#          МОДЕЛИ
+#          MODELS
 # =========================
 
 class User(Base):
     """
-    Модель пользователя бота.
+    Bot user model.
     """
     __tablename__ = "users"
 
@@ -35,7 +35,7 @@ class User(Base):
 
 class Channel(Base):
     """
-    Модель канала для отслеживания подписок.
+    Channel model for tracking subscriptions.
     """
     __tablename__ = "channels"
 

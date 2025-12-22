@@ -8,12 +8,12 @@ from database.repo import get_all_channels
 
 async def check_user_subscriptions(bot: Bot, tg_id: int, channels: Sequence[str]) -> list[str]:
     """
-    Проверить, на какие каналы из списка пользователь не подписан.
+    Check which channels from the list the user is not subscribed to.
 
-    :param bot: экземпляр aiogram.Bot
-    :param tg_id: Telegram ID пользователя
-    :param channels: список каналов (например ["@mychannel1", "@mychannel2"])
-    :return: список каналов, на которые пользователь НЕ подписан
+    :param bot: an instance of aiogram.Bot
+    :param tg_id: Telegram ID of the user
+    :param channels: a list of channels (e.g., ["@mychannel1", "@mychannel2"])
+    :return: a list of channels to which the user is NOT subscribed
     """
     unsubscribed_channels = []
 
@@ -25,18 +25,18 @@ async def check_user_subscriptions(bot: Bot, tg_id: int, channels: Sequence[str]
                 unsubscribed_channels.append(channel)
 
         except TelegramForbiddenError:
-            # Бот не имеет доступа к каналу (не добавлен как админ)
-            logging.warning(f"⚠️ Нет прав на проверку канала {channel}")
+            # The bot does not have access to the channel (not added as an admin)
+            logging.warning(f"⚠️ No rights to check channel {channel}")
             unsubscribed_channels.append(channel)
 
         except TelegramBadRequest as e:
-            # Канал не найден / некорректное имя
-            logging.warning(f"⚠️ Ошибка проверки {channel}: {e}")
+            # Channel not found / incorrect name
+            logging.warning(f"⚠️ Error checking {channel}: {e}")
             unsubscribed_channels.append(channel)
 
         except Exception as e:
-            # Любая другая ошибка
-            logging.error(f"❌ Не удалось проверить {channel}: {e}")
+            # Any other error
+            logging.error(f"❌ Failed to check {channel}: {e}")
             unsubscribed_channels.append(channel)
 
     return unsubscribed_channels
@@ -44,7 +44,7 @@ async def check_user_subscriptions(bot: Bot, tg_id: int, channels: Sequence[str]
 
 async def get_channels_list() -> list[str]:
     """
-    Получить список каналов из БД (если хранить в таблице).
+    Get the list of channels from the database.
     """
     channels = await get_all_channels()
     return [c.name for c in channels]

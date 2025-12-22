@@ -1,54 +1,54 @@
 # Boost Bot
 
 <p align="center">
-  <img src="assets/demo.gif" alt="Демонстрация работы бота">
+  <img src="assets/demo.gif" alt="Bot usage demonstration">
 </p>
 
-## Описание
+## Description
 
-**Boost Bot** — это Telegram-бот, предназначенный для проверки обязательной подписки на указанные каналы перед предоставлением доступа к контенту. Он помогает увеличить аудиторию ваших каналов, требуя от пользователей подписку для получения эксклюзивных материалов.
+**Boost Bot** is a Telegram bot designed to enforce mandatory subscription to specified channels before granting access to content. It helps to increase the audience of your channels by requiring users to subscribe to receive exclusive materials.
 
-## Функционал
+## Features
 
--   **Регистрация пользователей:** Автоматически сохраняет новых пользователей в базу данных.
--   **Админ-панель:** Просмотр статистики по пользователям через команду.
--   **Управление каналами:** Добавление каналов для обязательной подписки с помощью команд.
+-   **User Registration:** Automatically saves new users to the database.
+-   **Admin Panel:** View user statistics via a command.
+-   **Channel Management:** Add channels for mandatory subscription using commands.
 
-## Технологический стек
+## Technology Stack
 
--   **aiogram 3.x:** Асинхронный фреймворк для создания Telegram-ботов.
--   **SQLAlchemy 2.0:** ORM для работы с базой данных в асинхронном режиме.
--   **aiosqlite:** Асинхронный драйвер для работы с SQLite.
+-   **aiogram 3.x:** Asynchronous framework for creating Telegram bots.
+-   **SQLAlchemy 2.0:** ORM for working with the database in asynchronous mode.
+-   **aiosqlite:** Asynchronous driver for working with SQLite.
 
-## Установка
+## Installation
 
-1. **Клонируйте репозиторий:**
+1. **Clone the repository:**
     ```bash
     git clone https://github.com/xnskxkx/boost-bot.git
     cd boost-bot
     ```
 
-2.  **Создайте и активируйте виртуальное окружение:**
+2.  **Create and activate a virtual environment:**
     ```bash
     python -m venv venv
     source venv/bin/activate
     ```
 
-3.  **Установите зависимости:**
+3.  **Install dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Настройте переменные окружения:**
-    Создайте файл `.env` в корне проекта (скопируйте из `.env.example`) и укажите ваш токен и ID администратора:
+4.  **Configure environment variables:**
+    Create a `.env` file in the root of the project (copy from `.env.example`) and specify your token and administrator ID:
     ```
-    TG_BOT_TOKEN="ВАШ_ТЕЛЕГРАМ_ТОКЕН"
-    USER_ID_FOR_ADMIN="ВАШ_ID_В_ТЕЛЕГРАМ"
+    TG_BOT_TOKEN="YOUR_TELEGRAM_TOKEN"
+    USER_ID_FOR_ADMIN="YOUR_TELEGRAM_ID"
     ```
 
-## Запуск
+## Running
 
-Для запуска бота выполните команду:
+To start the bot, run the command:
 ```bash
 python run.py
 ```

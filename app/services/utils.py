@@ -2,23 +2,23 @@ from datetime import datetime
 
 def format_stats(stats: dict) -> str:
     """
-    Форматирует словарь статистики в читаемое сообщение.
+    Formats a dictionary of statistics into a readable message.
     """
     total = stats.get("total", 0)
     subscribed = stats.get("subscribed", 0)
     unsubscribed = stats.get("unsubscribed", 0)
 
     return (
-        "📊 <b>Статистика</b>\n\n"
-        f"👥 Всего пользователей: <b>{total}</b>\n"
-        f"✅ Подписаны: <b>{subscribed}</b>\n"
-        f"🚫 Не подписаны: <b>{unsubscribed}</b>"
+        "📊 <b>Statistics</b>\n\n"
+        f"👥 Total users: <b>{total}</b>\n"
+        f"✅ Subscribed: <b>{subscribed}</b>\n"
+        f"🚫 Unsubscribed: <b>{unsubscribed}</b>"
     )
 
 
 def format_datetime(dt: datetime | None) -> str:
     """
-    Возвращает дату в формате DD.MM.YYYY HH:MM.
+    Returns the date in DD.MM.YYYY HH:MM format.
     """
     if not dt:
         return "—"
@@ -27,18 +27,18 @@ def format_datetime(dt: datetime | None) -> str:
 
 def extract_username(user) -> str:
     """
-    Безопасно получить username пользователя для логов или БД.
+    Safely get a user's username for logs or DB.
     """
     if hasattr(user, "username") and user.username:
         return f"@{user.username}"
     if hasattr(user, "first_name"):
         return user.first_name
-    return "Без имени"
+    return "Nameless"
 
 
 def clean_channel_name(name: str) -> str:
     """
-    Приводит имя канала к корректному виду @channelname.
+    Brings the channel name to the correct form @channelname.
     """
     if not name.startswith("@"):
         name = f"@{name}"
@@ -47,6 +47,6 @@ def clean_channel_name(name: str) -> str:
 
 def split_message(text: str, limit: int = 4096) -> list[str]:
     """
-    Разбивает длинное сообщение на части, если оно превышает лимит Telegram (4096 символов).
+    Splits a long message into parts if it exceeds the Telegram limit (4096 characters).
     """
     return [text[i:i+limit] for i in range(0, len(text), limit)]

@@ -15,12 +15,12 @@ router = Router()
 @router.message(Command("stats"))
 async def stats(message: Message):
     """
-    Показать статистику бота (только для администратора).
+    Show bot statistics (admin only).
 
-    Выводит количество пользователей, подписок и другие метрики.
+    Displays the number of users, subscriptions, and other metrics.
     """
     if message.from_user.id != USER_ID_FOR_ADMIN:
-        return await message.answer("Нет доступа")
+        return await message.answer("Access denied")
 
     data = await get_stats()
     await message.answer(format_stats(data))
@@ -29,26 +29,26 @@ async def stats(message: Message):
 @router.message(Command("addchannel"))
 async def add_channel(message: Message):
     """
-    Добавить канал в список для отслеживания подписок (только для администратора).
+    Add a channel to the subscription tracking list (admin only).
 
-    Формат: /addchannel @channel_name
+    Format: /addchannel @channel_name
     """
     tg_id = message.from_user.id
     if tg_id != USER_ID_FOR_ADMIN:
-        return await message.answer("🚫 Нет доступа")
+        return await message.answer("🚫 Access denied")
 
     parts = message.text.split(maxsplit=1)
     if len(parts) < 2:
-        return await message.answer("Укажи название канала, например:\n/addchannel @mychannel")
+        return await message.answer("Specify the channel name, for example:\n/addchannel @mychannel")
 
     channel_name = parts[1].strip()
 
     async with async_session() as session:
         exists = await session.scalar(Channel.__table__.select().where(Channel.name == channel_name))
         if exists:
-            return await message.answer("⚠️ Этот канал уже есть в списке.")
+            return await message.answer("⚠️ This channel is already on the list.")
 
         session.add(Channel(name=channel_name))
         await session.commit()
 
-    await message.answer(f"✅ Канал {channel_name} добавлен.")
+    await message.answer(f"✅ Channel {channel_name} added.")

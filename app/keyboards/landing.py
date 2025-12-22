@@ -3,26 +3,26 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
 def get_content_message() -> tuple[str, InlineKeyboardMarkup]:
     """
-    Возвращает финальный текст и клавиатуру с контентом.
+    Returns the final text and keyboard with content.
     """
     text = (
-        "💀 <b>ДОСТУП ОТКРЫТ!</b>\n\n"
-        "Ты прошел проверку — теперь держи тот самый трэш 🔥\n"
-        "Жми на кнопку и погрузись в ад 👇\n\n"
-        "<i>Если не открывается — попробуй с телефона или обнови Telegram.</i>"
+        "💀 <b>ACCESS GRANTED!</b>\n\n"
+        "You have passed the check - now here is the promised content 🔥\n"
+        "Click the button and dive in 👇\n\n"
+        "<i>If it doesn't open, try from your phone or update Telegram.</i>"
     )
 
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🤯 СМОТРЕТЬ ТРЭШ",
+                    text="🤯 WATCH CONTENT",
                     url="https://t.me/your_private_channel_or_content"
                 )
             ],
             [
                 InlineKeyboardButton(
-                    text="💩 ВСТУПИТЬ В БЕСПРЕДЕЛ",
+                    text="💩 JOIN THE MAYHEM",
                     url="https://t.me/your_private_chat"
                 )
             ]

@@ -12,22 +12,22 @@ from database.models import User, Channel
 
 async def get_or_create_user(tg_id: int, username: str | None) -> User:
     """
-    Найти пользователя по tg_id или создать нового.
-    Обновляет username, если он изменился.
+    Find a user by tg_id or create a new one.
+    Updates the username if it has changed.
     """
     async with async_session() as session:
         try:
             user = await session.scalar(select(User).where(User.tg_id == tg_id))
 
             if user:
-                # обновляем username при изменении
+                # update username on change
                 if username and user.username != username:
                     user.username = username
                     await session.commit()
                     await session.refresh(user)
                 return user
 
-            # создаём нового пользователя
+            # create a new user
             user = User(tg_id=tg_id, username=username)
             session.add(user)
             await session.commit()
@@ -35,22 +35,22 @@ async def get_or_create_user(tg_id: int, username: str | None) -> User:
             return user
 
         except SQLAlchemyError as e:
-            logging.error(f"❌ Ошибка при get_or_create_user: {e}")
+            logging.error(f"❌ Error in get_or_create_user: {e}")
             return None
 
 
 async def set_user(tg_id: int, username: str | None) -> None:
     """
-    Идемпотентная регистрация пользователя:
-    если уже есть — обновляет username (если изменился);
-    если нет — создаёт.
+    Idempotent user registration:
+    if exists - updates username (if changed);
+    if not - creates.
     """
     await get_or_create_user(tg_id, username)
 
 
 async def update_subscription_status(tg_id: int, is_subscribed: bool) -> None:
     """
-    Обновить статус подписки пользователя.
+    Update user's subscription status.
     """
     async with async_session() as session:
         await session.execute(
@@ -63,8 +63,8 @@ async def update_subscription_status(tg_id: int, is_subscribed: bool) -> None:
 
 async def get_stats() -> dict:
     """
-    Получить статистику пользователей:
-    всего, подписанных, неподписанных.
+    Get user statistics:
+    total, subscribed, unsubscribed.
     """
     async with async_session() as session:
         total = await session.scalar(select(func.count()).select_from(User))
@@ -82,7 +82,7 @@ async def get_stats() -> dict:
 
 async def get_all_users() -> list[User]:
     """
-    Получить всех пользователей.
+    Get all users.
     """
     async with async_session() as session:
         result = await session.scalars(select(User))
@@ -95,7 +95,7 @@ async def get_all_users() -> list[User]:
 
 async def get_all_channels() -> list[User]:
     """
-    Получить все каналы.
+    Get all channels.
     """
     async with async_session() as session:
         result = await session.scalars(select(Channel))

@@ -9,24 +9,24 @@ from app.handlers import admin, start
 
 async def main():
     """
-    Точка входа в бота.
+    Bot entry point.
     """
-    # Инициализация базы данных
+    # Initialize the database
     await init_db()
 
-    # Создаём диспетчер
+    # Create a dispatcher
     dp = Dispatcher()
 
-    # Подключаем все роутеры
+    # Connect all routers
     dp.include_router(admin.router)
     dp.include_router(start.router)
 
-    # Удаляем старый webhook (если был)
+    # Delete the old webhook (if it existed)
     await bot.delete_webhook(drop_pending_updates=True)
 
-    logging.info("🤖 Бот запущен. Ожидание сообщений...")
+    logging.info("🤖 Bot started. Waiting for messages...")
 
-    # Запуск long polling
+    # Start long polling
     await dp.start_polling(bot)
 
 
@@ -38,4 +38,4 @@ if __name__ == "__main__":
     try:
         asyncio.run(main())
     except (KeyboardInterrupt, SystemExit):
-        logging.info("👋 Завершение работы бота")
+        logging.info("👋 Shutting down the bot")

@@ -4,14 +4,14 @@ from typing import Sequence
 
 def get_check_sub_button(tg_id: int) -> InlineKeyboardMarkup:
     """
-    Клавиатура с кнопкой 'Проверить подписку'.
-    :param tg_id: добавляется в callback_data для уникальности.
+    Keyboard with a 'Check Subscription' button.
+    :param tg_id: added to callback_data for uniqueness.
     """
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
                 InlineKeyboardButton(
-                    text="🔍 Проверить подписку",
+                    text="🔍 Check Subscription",
                     callback_data=f"check_subs:{tg_id}"
                 )
             ]
@@ -22,8 +22,8 @@ def get_check_sub_button(tg_id: int) -> InlineKeyboardMarkup:
 
 def get_channels_buttons(channels: Sequence[str]) -> InlineKeyboardMarkup:
     """
-    Клавиатура с кнопками для перехода на каналы (URL-кнопки).
-    :param channels: список строк (например ['@ch1', '@ch2'])
+    Keyboard with buttons to go to channels (URL buttons).
+    :param channels: list of strings (e.g., ['@ch1', '@ch2'])
     """
     buttons = []
 
@@ -31,7 +31,7 @@ def get_channels_buttons(channels: Sequence[str]) -> InlineKeyboardMarkup:
         channel_name = ch.replace("@", "")
         url = f"https://t.me/{channel_name}"
         buttons.append(
-            [InlineKeyboardButton(text=f"📢 Подписаться на {ch}", url=url)]
+            [InlineKeyboardButton(text=f"📢 Subscribe to {ch}", url=url)]
         )
 
     keyboard = InlineKeyboardMarkup(inline_keyboard=buttons)

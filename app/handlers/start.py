@@ -16,10 +16,10 @@ router = Router()
 @router.message(CommandStart())
 async def start(message: Message):
     """
-    Обработка команды /start.
+    Handler for the /start command.
 
-    Регистрирует пользователя в базе и показывает приветственное сообщение
-    с кнопкой для проверки подписок.
+    Registers the user in the database and shows a welcome message
+    with a button to check subscriptions.
     """
     tg_id = message.from_user.id
     username = message.from_user.username or ""
@@ -27,8 +27,8 @@ async def start(message: Message):
     await set_user(tg_id, username)
 
     await message.answer(
-        "📹 То самое видео с трэшем в школе!\n\n"
-        "Подпишись на все каналы 👇 и получи доступ к запретке",
+        "📹 The video with the school trash!\n\n"
+        "Subscribe to all channels 👇 and get access to the forbidden content",
         reply_markup=get_check_sub_button(tg_id),
     )
 
@@ -36,32 +36,32 @@ async def start(message: Message):
 @router.callback_query(F.data.startswith("check_subs:"))
 async def handle_check_subscriptions(callback: CallbackQuery):
     """
-    Проверка подписок пользователя на все обязательные каналы.
+    Checks the user's subscriptions to all required channels.
 
-    Если пользователь подписан на все каналы — показывает контент.
-    Если нет — выводит список каналов, на которые нужно подписаться.
+    If the user is subscribed to all channels, it shows the content.
+    If not, it displays a list of channels to subscribe to.
     """
     tg_id = callback.from_user.id
 
-    # Получаем список каналов из базы
+    # Get the list of channels from the database
     async with async_session() as session:
         result = await session.execute(
-            # ORM-запрос к Channel
+            # ORM query to Channel
             Channel.__table__.select()
         )
         channels = [row.name for row in result.fetchall()]
 
     if not channels:
-        await callback.message.answer("❌ Нет каналов для проверки.")
+        await callback.message.answer("❌ No channels to check.")
         return await callback.answer()
 
-    # Проверяем подписки
+    # Check subscriptions
     unsubscribed = await check_user_subscriptions(bot, tg_id, channels)
 
     if unsubscribed:
         await update_subscription_status(tg_id, False)
         await callback.message.answer(
-            "🚫 Ты не подписан на эти каналы:",
+            "🚫 You are not subscribed to these channels:",
             reply_markup=get_channels_buttons(unsubscribed)
         )
     else:
@@ -69,38 +69,38 @@ async def handle_check_subscriptions(callback: CallbackQuery):
         text, keyboard = get_content_message()
         await callback.message.answer(text, reply_markup=keyboard)
 
-    await callback.answer()  # закрываем "часики"
+    await callback.answer()  # close the "loading" clock
 
 
 @router.message(Command("trash"))
 async def handle_check_subscriptions(message: Message):
     """
-    Проверка подписок пользователя на все обязательные каналы.
+    Checks the user's subscriptions to all required channels.
 
-    Если пользователь подписан на все каналы — показывает контент.
-    Если нет — выводит список каналов, на которые нужно подписаться.
+    If the user is subscribed to all channels, it shows the content.
+    If not, it displays a list of channels to subscribe to.
     """
     tg_id = message.from_user.id
 
-    # Получаем список каналов из базы
+    # Get the list of channels from the database
     async with async_session() as session:
         result = await session.execute(
-            # ORM-запрос к Channel
+            # ORM query to Channel
             Channel.__table__.select()
         )
         channels = [row.name for row in result.fetchall()]
 
     if not channels:
-        await message.answer("❌ Нет каналов для проверки.")
+        await message.answer("❌ No channels to check.")
         return
 
-    # Проверяем подписки
+    # Check subscriptions
     unsubscribed = await check_user_subscriptions(bot, tg_id, channels)
 
     if unsubscribed:
         await update_subscription_status(tg_id, False)
         await message.answer(
-            "🚫 Ты не подписан на эти каналы:",
+            "🚫 You are not subscribed to these channels:",
             reply_markup=get_channels_buttons(unsubscribed)
         )
     else:
